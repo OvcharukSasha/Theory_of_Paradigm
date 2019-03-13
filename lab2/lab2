@@ -1,0 +1,48 @@
+
+isCube(0).
+isCube(1).
+isCube(P):-
+  P>1,
+  isDivisibleBy3(P, P-1).
+
+isDivisibleBy3( P , X ) :-
+  X > 1,
+ (    X*X*X =:= P,
+ write("");
+  isDivisibleBy3( P , X-1 )); false.
+
+isDivisibleBy3( _ , X ) :-
+  0 is X .
+
+generateNotCube(0, []):-!.
+generateNotCube( N , X ) :-
+  isCube( N ), !,
+  Z is N-1 ,
+  generateNotCube( Z , X ) .
+generateNotCube(N, [N | X] ):-
+  Z is N-1 ,
+  generateNotCube( Z , X ) .
+
+
+
+
+del([_|T],T,1).
+del([Head|Tail],B,N) :-
+    K is N-1,
+    del(Tail,C,K),
+    B = [Head|C].
+
+listdelaux(A,A,[]).
+listdelaux(A,B,Indices) :-
+
+    Indices = [Index|IndicesTail],
+    write(Index + IndicesTail),
+    del(A,X,Index),
+    listdelaux(X,B,IndicesTail).
+
+
+listdel([],[]).
+listdel(A,B) :-
+    length(A, N),
+    generateNotCube(N, P),
+    listdelaux(A,B,P).
